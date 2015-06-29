@@ -1,0 +1,33 @@
+﻿@using HeartBeat.Models
+@model IEnumerable<HeartBeatInfo>
+@{ViewBag.Title = "HeartBeats";}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <h1>@ViewBag.Title</h1>
+
+    @if(Model.Count() == 0)
+    {
+        <div>No HeratBeats</div>
+    }
+    else
+    {
+        <table>
+            <tr><th>Group</th><th>Device</th><th>Service</th><th>Status</th></tr>
+            @foreach (var beat in Model)
+            {
+                <tr>
+                    <td>@beat.group</td>
+                    <td>@beat.device</td>
+                    <td>@beat.servicce</td>
+                    <td>@beat.status</td>
+                </tr>
+            }
+        </table>
+    }
+</body>
+</html>
