@@ -11,5 +11,6 @@ namespace HeartBeat.Models
         public string device { get; set; }
         public string servicce { get; set; }
         public string status { get; set; }
+        public DateTime time { get; set; }
     }
 }

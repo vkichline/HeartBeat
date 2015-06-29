@@ -6,6 +6,7 @@
 <html>
 <head>
     <title>@ViewBag.Title</title>
+    <link href="~/site.css" rel="stylesheet" />
 </head>
 <body>
     <h1>@ViewBag.Title</h1>
@@ -17,7 +18,7 @@
     else
     {
         <table>
-            <tr><th>Group</th><th>Device</th><th>Service</th><th>Status</th></tr>
+            <tr><th>Group</th><th>Device</th><th>Service</th><th>Status</th><th>Posted</th></tr>
             @foreach (var beat in Model)
             {
                 <tr>
@@ -25,6 +26,7 @@
                     <td>@beat.device</td>
                     <td>@beat.servicce</td>
                     <td>@beat.status</td>
+                    <td>@beat.time.ToString("T")</td>
                 </tr>
             }
         </table>
