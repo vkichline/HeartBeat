@@ -1,0 +1,11 @@
+Publish with Core only is not working.
+Insteady, try this from the command line
+(Will need a fixup on different machines/accounts)
+
+msbuild C:\Users\vank\Source\Repos\HeartBeat\src\HeartBeat\HeartBeat.xproj /p:deployOnBuild=true;publishprofile=C:\Users\vank\Source\Repos\HeartBeat\src\HeartBeat\Properties\PublishProfiles\Kichline-HeartBeat.pubxml;RuntimeToolingDirectory=C:\Users\vank\.dnx\runtimes\dnx-coreclr-win-x86.1.0.0-beta5;password=???
+
+
+Password:
+Download publish profile.
+portal.zaure.com -> web apps -> kichline-heartbeat
+Up near the top, second blade, 8th button: Get publish...
