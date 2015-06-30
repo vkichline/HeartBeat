@@ -10,11 +10,11 @@ namespace HeartBeat.Controllers
 
         public HeartBeatController()
         {
-            _repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Test", "OK");
-            _repo.AddHeartBeat("Kichline.Kirkland", "RPi1", "Test", "OK");
-            _repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "OK");
-            _repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "OK");
-            _repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "IDLE");
+            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Test", "OK");
+            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi1", "Test", "OK");
+            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "OK");
+            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "OK");
+            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "IDLE");
         }
 
         // GET: api/HeartBeat/
