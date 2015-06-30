@@ -9,3 +9,8 @@ Password:
 Download publish profile.
 portal.zaure.com -> web apps -> kichline-heartbeat
 Up near the top, second blade, 8th button: Get publish...
+
+
+Fiddler:
+POST the following:
+http://kichline-heartbeat.azurewebsites.net/api/HeartBeat?group=a&device=b&service=c&status=BUSY
