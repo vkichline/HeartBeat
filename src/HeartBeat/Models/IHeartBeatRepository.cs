@@ -8,7 +8,6 @@ namespace HeartBeat.Models
     public interface IHeartBeatRepository
     {
         IEnumerable<HeartBeatInfo> GetHeartBeats();
-        // returns true if added, false if dupe
-        bool AddHeartBeat(string group, string device, string service, string status);
+        void AddHeartBeat(string group, string device, string service, string status);
     }
 }
