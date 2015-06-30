@@ -7,6 +7,7 @@
 <head>
     <title>@ViewBag.Title</title>
     <link href="~/site.css" rel="stylesheet" />
+    <meta http-equiv="refresh" content="10">
 </head>
 <body>
     <h1>@ViewBag.Title</h1>
@@ -17,16 +18,18 @@
     }
     else
     {
-        <table>
-            <tr><th>Group</th><th>Device</th><th>Service</th><th>Status</th><th>Posted</th></tr>
+        DateTime now = DateTime.Now;
+       <table>
+            <tr><th>Group</th><th>Device</th><th>Service</th><th>Status</th><th>hh:mm:ss</th></tr>
             @foreach (var beat in Model)
             {
+                TimeSpan diff = now - beat.time;
                 <tr>
                     <td>@beat.group</td>
                     <td>@beat.device</td>
                     <td>@beat.servicce</td>
                     <td>@beat.status</td>
-                    <td>@beat.time.ToString("T")</td>
+                    <td>@diff.ToString(@"hh\:mm\:ss")</td>
                 </tr>
             }
         </table>
