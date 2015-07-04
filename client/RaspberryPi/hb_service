@@ -1,0 +1,34 @@
+#! /bin/sh
+# /etc/init.d/hb_service
+ 
+### BEGIN INIT INFO
+# Provides: hb_service
+# Required-Start: $network $syslog
+# Required-Stop: $network $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start HeartBeat IoT monitor service
+# Description: Start the HeartBeat service, which will post to kichline-heartbeat every 5 minutes with uptime in seconds
+### END INIT INFO
+ 
+# If you want a command to always run, put it here
+ 
+# Carry out specific functions when asked to by the system
+case "$1" in
+start)
+echo "Starting HeartBeat"
+# run application you want to start
+/usr/local/bin/hb &
+;;
+stop)
+echo "Stopping lcd_monitor"
+# kill application you want to stop
+killall hb
+;;
+*)
+echo "Usage: /etc/init.d/hb {start|stop}"
+exit 1
+;;
+esac
+ 
+exit 0
