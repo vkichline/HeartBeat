@@ -2,15 +2,19 @@ Publish with Core only is not working.
 Insteady, try this from the command line
 (Will need a fixup on different machines/accounts)
 
+stop webapp in the portal
 msbuild C:\Users\vank\Source\Repos\HeartBeat\src\HeartBeat\HeartBeat.xproj /p:deployOnBuild=true;publishprofile=C:\Users\vank\Source\Repos\HeartBeat\src\HeartBeat\Properties\PublishProfiles\Kichline-HeartBeat.pubxml;RuntimeToolingDirectory=C:\Users\vank\.dnx\runtimes\dnx-coreclr-win-x86.1.0.0-beta5;password=???
+msbuild C:\Users\Van\Documents\GitHubVisualStudio\HeartBeat\src\HeartBeat\HeartBeat.xproj /p:deployOnBuild=true;publishprofile=C:\Users\Van\Documents\GitHubVisualStudio\HeartBeat\src\HeartBeat\Properties\PublishProfiles\Kichline-HeartBeat.pubxml;RuntimeToolingDirectory=C:\Users\van\.dnx\runtimes\dnx-coreclr-win-x86.1.0.0-beta5;password=???
+start webapp in the portal
 
 
 Password:
 Download publish profile.
-portal.zaure.com -> web apps -> kichline-heartbeat
+portal.azure.com -> web apps -> kichline-heartbeat
 Up near the top, second blade, 8th button: Get publish...
 
+"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat"
 
 Fiddler:
 POST the following:
-http://kichline-heartbeat.azurewebsites.net/api/HeartBeat?group=a&device=b&service=c&status=BUSY
+http://kichline-heartbeat.azurewebsites.net/api/HeartBeat?group=Test&device=DevBox&service=Test&status=OK
