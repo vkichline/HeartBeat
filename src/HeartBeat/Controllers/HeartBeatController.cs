@@ -6,18 +6,12 @@ namespace HeartBeat.Controllers
     [Route("api/[controller]")]
     public class HeartBeatController : Controller
     {
-        private HeartBeatRepository _repo = new HeartBeatRepository();
+        private IHeartBeatRepository _repo { get; set;  }
 
-        public HeartBeatController()
+        public HeartBeatController(IHeartBeatRepository hbr)
         {
-            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Test", "OK");
-            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi1", "Test", "OK");
-            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "OK");
-            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "OK");
-            //_repo.AddHeartBeat("Kichline.Kirkland", "RPi2", "Cam", "IDLE");
+            _repo = hbr;
         }
-
-        // GET: api/HeartBeat/
 
         [HttpGet]
         public IActionResult Index()
@@ -25,7 +19,6 @@ namespace HeartBeat.Controllers
             return View(_repo.GetHeartBeats());
         }
 
-        // POST: api/HeartBeat/
         [HttpPost]
         public void Post(string group, string device, string service, string status)
         {
