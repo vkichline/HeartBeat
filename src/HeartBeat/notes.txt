@@ -16,5 +16,17 @@ Up near the top, second blade, 8th button: Get publish...
 "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat"
 
 Fiddler:
-POST the following:
+With the param-based POST, POST the following:
 http://kichline-heartbeat.azurewebsites.net/api/HeartBeat?group=Test&device=DevBox&service=Test&status=OK
+
+Switching to content-based, that would be:
+http://localhost:51319/api/HeartBeat
+Content-Length: 99
+Content-Type: text/json
+[content:]
+{
+    "group": "Foo",
+    "device": "Fiddler",
+    "service": "Test",
+    "status": "Good"
+}

@@ -9,7 +9,7 @@ namespace HeartBeat.Models
     {
         public string group { get; set; }
         public string device { get; set; }
-        public string servicce { get; set; }
+        public string service { get; set; }
         public string status { get; set; }
         public DateTime time { get; set; }
     }
