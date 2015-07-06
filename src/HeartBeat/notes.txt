@@ -30,3 +30,8 @@ Content-Type: text/json
     "service": "Test",
     "status": "Good"
 }
+
+
+To get xUnit working with VS 2015 RTM / DNX beta5,
+Go to: Tools/Options/Nuget Package Manager/Package Sources
+Add: https://www.myget.org/F/xunit/
