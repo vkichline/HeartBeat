@@ -9,11 +9,17 @@ namespace HeartBeat.Models
     {
         private static List<HeartBeatInfo> _info = new List<HeartBeatInfo>();
         private readonly object syncLock = new object();
-        private int timeoutSeconds = 15 * 60;
+
+        public int Timeout { get; set; }
+
+        public HeartBeatRepository()
+        {
+            Timeout = 15 * 60;  // Default: 15 minutes
+        }
 
         public IEnumerable<HeartBeatInfo> GetHeartBeats()
         {
-            purge(timeoutSeconds);
+            purge(Timeout);
             return _info;
         }
 
@@ -26,7 +32,7 @@ namespace HeartBeat.Models
             {
                 foreach (HeartBeatInfo item in _info)
                 {
-                    if (item.group == group && item.device == device && item.servicce == service)
+                    if (item.group == group && item.device == device && item.service == service)
                     {
                         item.time = posted;
                         if (item.status == status)
@@ -44,7 +50,7 @@ namespace HeartBeat.Models
                 }
                 if (!found)
                 {
-                    HeartBeatInfo hbi = new HeartBeatInfo { group = group, device = device, servicce = service, status = status, time = posted };
+                    HeartBeatInfo hbi = new HeartBeatInfo { group = group, device = device, service = service, status = status, time = posted };
                     _info.Add(hbi);
                 }
             }

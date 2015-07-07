@@ -24,5 +24,14 @@ namespace HeartBeat.Controllers
         {
             _repo.AddHeartBeat(group, device, service, status);
         }
+
+        //[HttpPost]
+        //public void PostJson([FromBody] HeartBeatInfo hbi)
+        //{
+        //    if (null != hbi)
+        //    {
+        //        _repo.AddHeartBeat(hbi.group, hbi.device, hbi.service, hbi.status);
+        //    }
+        //}
     }
 }
