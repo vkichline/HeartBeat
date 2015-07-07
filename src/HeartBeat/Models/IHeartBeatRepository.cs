@@ -10,5 +10,6 @@ namespace HeartBeat.Models
         int Timeout { get; set; }
         IEnumerable<HeartBeatInfo> GetHeartBeats();
         void AddHeartBeat(string group, string device, string service, string status);
+        void Clear();
     }
 }

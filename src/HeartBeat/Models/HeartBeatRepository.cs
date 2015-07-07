@@ -56,6 +56,11 @@ namespace HeartBeat.Models
             }
         }
 
+        public void Clear()
+        {
+            purge(0);
+        }
+
         private void purge(int ageInSeconds)
         {
             lock (syncLock)
@@ -68,7 +73,7 @@ namespace HeartBeat.Models
                     if (hbi.time.Ticks > cutoff)
                         newInfo.Add(hbi);
                 }
-                _info = newInfo; 
+                _info = newInfo;
             }
         }
     }

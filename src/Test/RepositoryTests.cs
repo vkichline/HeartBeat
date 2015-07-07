@@ -1,8 +1,6 @@
 ﻿using HeartBeat.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Test
@@ -27,8 +25,8 @@ namespace Test
         {
             IHeartBeatRepository hbr = new HeartBeatRepository();
             hbr.AddHeartBeat("TestGroup", "TestDevice", "TestService", "OK");
-            IEnumerable<HeartBeatInfo> hbi = hbr.GetHeartBeats();
-            Assert.Equal(1, hbi.Count());
+            IEnumerable<HeartBeatInfo> beats = hbr.GetHeartBeats();
+            Assert.Equal(1, beats.Count());
         }
 
         [Fact]
@@ -36,11 +34,11 @@ namespace Test
         {
             IHeartBeatRepository hbr = new HeartBeatRepository();
             hbr.AddHeartBeat("TestGroup", "TestDevice", "TestService", "OK");
-            IEnumerable<HeartBeatInfo> hbi = hbr.GetHeartBeats();
-            Assert.Equal(1, hbi.Count());
+            IEnumerable<HeartBeatInfo> beats = hbr.GetHeartBeats();
+            Assert.Equal(1, beats.Count());
             hbr.Timeout = 0;    // Should cause all to be purged
-            hbi = hbr.GetHeartBeats();
-            Assert.Equal(0, hbi.Count());
+            beats = hbr.GetHeartBeats();
+            Assert.Equal(0, beats.Count());
         }
     }
 }
