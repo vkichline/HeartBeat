@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNet.Mvc;
 using HeartBeat.Models;
+using System.Collections.Generic;
+using System.Web.Http;
+using System.Net;
+using System.Net.Http;
+using System;
 
 namespace HeartBeat.Controllers
 {
@@ -13,25 +18,64 @@ namespace HeartBeat.Controllers
             _repo = hbr;
         }
 
+        // Get all the HeartBeatInfo records
         [HttpGet]
-        public IActionResult Index()
+        IEnumerable<HeartBeatInfo> Get()
         {
-            return View(_repo.GetHeartBeats());
+            return _repo.GetAll();
+        }
+
+        // Get a specific HeartBeatInfo record
+        [HttpGet("{id}")]
+        IActionResult Get(string Id)
+        {
+            HeartBeatInfo hbi = _repo.Get(Id);
+            if(null == hbi)
+            {
+                return HttpNotFound();
+            }
+            return new ObjectResult(hbi);
         }
 
         [HttpPost]
-        public void Post(string group, string device, string service, string status)
+        public void Post([FromBody] HeartBeatInfo hbi)
         {
-            _repo.AddHeartBeat(group, device, service, status);
+            if (null == hbi)
+            {
+                Context.Response.StatusCode = 400;
+            }
+            else
+            {
+                HeartBeatInfo newHbi = _repo.Add(hbi);
+                if (null == newHbi)
+                {
+                    Context.Response.StatusCode = 403;
+                    return;
+                }
+                string url = Url.RouteUrl("Get", new { id = hbi.Id }, Request.Scheme, Request.Host.ToUriComponent());
+                Context.Response.StatusCode = 201;
+                Context.Response.Headers["Location"] = url;
+            }
         }
 
-        //[HttpPost]
-        //public void PostJson([FromBody] HeartBeatInfo hbi)
-        //{
-        //    if (null != hbi)
-        //    {
-        //        _repo.AddHeartBeat(hbi.group, hbi.device, hbi.service, hbi.status);
-        //    }
-        //}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteItem(string id)
+        {
+            try
+            {
+                _repo.Remove(id);
+                return new HttpStatusCodeResult(204);
+            }
+            catch
+            {
+                return HttpNotFound();
+            }
+        }
+
+        [HttpPut]
+        public void Update([FromBody] HeartBeatInfo hbi)
+        {
+            _repo.Update(hbi);
+        }
     }
 }

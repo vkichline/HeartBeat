@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HeartBeat.Models
 {
-    public class HeartBeatRepository: IHeartBeatRepository
+    public class HeartBeatRepository : IHeartBeatRepository
     {
-        private static List<HeartBeatInfo> _info = new List<HeartBeatInfo>();
+        private static List<HeartBeatInfo> _heartbeats = new List<HeartBeatInfo>();
         private readonly object syncLock = new object();
 
         public int Timeout { get; set; }
@@ -17,46 +18,98 @@ namespace HeartBeat.Models
             Timeout = 15 * 60;  // Default: 15 minutes
         }
 
-        public IEnumerable<HeartBeatInfo> GetHeartBeats()
+        public IEnumerable<HeartBeatInfo> GetAll()
         {
             purge(Timeout);
-            return _info;
+            return _heartbeats;
         }
 
-        public void AddHeartBeat(string group, string device, string service, string status)
+        public HeartBeatInfo Get(string Id)
         {
-            DateTime posted = DateTime.Now;
-            bool found = false;
-
-            lock(syncLock)
+            HeartBeatInfo hbi = null;
+            lock (syncLock)
             {
-                foreach (HeartBeatInfo item in _info)
+                hbi = PrivateGet(Id);
+            }
+            return hbi;
+        }
+
+        public HeartBeatInfo Add(HeartBeatInfo hbi)
+        {
+            if (null == hbi || null == hbi.group || null == hbi.device || null == hbi.service || null == hbi.status)
+            {
+                return null;
+            }
+            hbi.Id = MakeIdFromInfo(hbi);
+            hbi.time = DateTime.Now;
+            bool error = false;
+            lock (syncLock)
+            {
+                // Add precludes replacing existing item
+                error = (null != PrivateGet(hbi.Id));
+                if (!error)
                 {
-                    if (item.group == group && item.device == device && item.service == service)
-                    {
-                        item.time = posted;
-                        if (item.status == status)
-                        {
-                            found = true;
-                            break;
-                        }
-                        else
-                        {
-                            found = true;
-                            item.status = status;
-                            break;
-                        }
-                    }
+                    _heartbeats.Add(hbi.Copy());
                 }
-                if (!found)
+            }
+            if (error)
+            {
+                return null;
+            }
+            return hbi;
+        }
+
+        public void Remove(string Id)
+        {
+            if (null == Id || Id == "")
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            bool error = false;
+            lock (syncLock)
+            {
+                HeartBeatInfo hbi = PrivateGet(Id);
+                if (null == hbi)
                 {
-                    HeartBeatInfo hbi = new HeartBeatInfo { group = group, device = device, service = service, status = status, time = posted };
-                    _info.Add(hbi);
+                    error = true;
                 }
+                else
+                {
+                    _heartbeats.Remove(hbi);
+                }
+            }
+            if(error)
+            {
+                throw new MissingMemberException();
             }
         }
 
-        public void Clear()
+        public bool Update(HeartBeatInfo hbi)
+        {
+            HeartBeatInfo found = null;
+            lock (syncLock)
+            {
+                found = PrivateGet(hbi.Id);
+                if (null != found)
+                {
+                    // Only status can change.  Difference in group, device or service is an error
+                    if (!(found.group.Equals(hbi.group, StringComparison.CurrentCultureIgnoreCase) &&
+                        found.device.Equals(hbi.device, StringComparison.CurrentCultureIgnoreCase) &&
+                        found.service.Equals(hbi.service, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        found = null;
+                    }
+                    else
+                    {
+                        found.time = DateTime.Now;
+                        found.status = hbi.status;
+                    }
+                }
+            }
+            return (null != found);
+        }
+
+        public void ClearAll()
         {
             purge(0);
         }
@@ -68,13 +121,37 @@ namespace HeartBeat.Models
                 long cutoff = DateTime.Now.Ticks - ((long)ageInSeconds * (long)10000000);
                 List<HeartBeatInfo> newInfo = new List<HeartBeatInfo>();
 
-                foreach (HeartBeatInfo hbi in _info)
+                foreach (HeartBeatInfo hbi in _heartbeats)
                 {
                     if (hbi.time.Ticks > cutoff)
                         newInfo.Add(hbi);
                 }
-                _info = newInfo;
+                _heartbeats = newInfo;
             }
+        }
+
+        private string MakeIdFromInfo(HeartBeatInfo hbi)
+        {
+            StringBuilder id = new StringBuilder(hbi.group);
+            id.Append("%09");
+            id.Append(hbi.device);
+            id.Append("%09");
+            id.Append(hbi.service);
+            return id.ToString();
+        }
+
+        private HeartBeatInfo PrivateGet(string Id)
+        {
+            HeartBeatInfo hbi = null;
+            foreach (HeartBeatInfo aHbi in _heartbeats)
+            {
+                if (aHbi.Id == Id)
+                {
+                    hbi = aHbi;
+                    break;
+                }
+            }
+            return hbi;
         }
     }
 }
